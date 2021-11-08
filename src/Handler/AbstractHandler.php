@@ -117,4 +117,11 @@ abstract class AbstractHandler implements HandlerInterface
 
         return $commit;
     }
+
+    public function getCommitMessage(int $index = 0): string
+    {
+        $commits = $this->getCommits();
+
+        return $commits[$index]['message'] ?? '';
+    }
 }

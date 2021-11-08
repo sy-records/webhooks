@@ -37,4 +37,6 @@ interface HandlerInterface
     public function getCommits(): array;
 
     public function getHeadCommit(): array;
+
+    public function getCommitMessage(int $index = 0): string;
 }
