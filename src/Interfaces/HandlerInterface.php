@@ -33,4 +33,8 @@ interface HandlerInterface
     public function getBranch(bool $split = true): string;
 
     public function getTag(bool $split = true): string;
+
+    public function getCommits(): array;
+
+    public function getHeadCommit(): array;
 }

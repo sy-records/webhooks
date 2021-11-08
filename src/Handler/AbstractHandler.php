@@ -100,4 +100,21 @@ abstract class AbstractHandler implements HandlerInterface
 
         return $tag;
     }
+
+    public function getCommits(): array
+    {
+        return $this->get('commits', []);
+    }
+
+    public function getHeadCommit(): array
+    {
+        $body = $this->getBody();
+        $commit = $body['head_commit'] ?? [];
+        if (empty($commit)) {
+            $commits = $body['commits'] ?? [];
+            $commit = array_shift($commits) ?? [];
+        }
+
+        return $commit;
+    }
 }
