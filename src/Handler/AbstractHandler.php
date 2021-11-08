@@ -31,8 +31,13 @@ abstract class AbstractHandler implements HandlerInterface
     {
         $data = $this->request->getParsedBody();
 
+        $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
+
+        if (isset($data['payload']) && strpos($contentType, 'application/x-www-form-urlencoded') === 0) {
+            return json_decode($data['payload'], true) ?? [];
+        }
+
         if (empty($data)) {
-            $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
             if (strpos($contentType, 'application/json') === 0) {
                 $data = json_decode($this->request->getBody()->getContents(), true) ?? [];
             }
