@@ -27,6 +27,11 @@ abstract class AbstractHandler implements HandlerInterface
         return $this->request;
     }
 
+    public function getBody(): array
+    {
+        return $this->normalizeParsedBody();
+    }
+
     private function normalizeParsedBody(): array
     {
         $data = $this->request->getParsedBody();
