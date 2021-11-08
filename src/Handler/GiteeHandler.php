@@ -48,4 +48,9 @@ class GiteeHandler extends AbstractHandler
 
         return true;
     }
+
+    public function getSender(): array
+    {
+        return $this->get('sender', []);
+    }
 }
