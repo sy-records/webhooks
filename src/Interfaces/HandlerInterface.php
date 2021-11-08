@@ -29,4 +29,8 @@ interface HandlerInterface
     public function check(string $secret): bool;
 
     public function getSender(): array;
+
+    public function getBranch(bool $split = true): string;
+
+    public function getTag(bool $split = true): string;
 }

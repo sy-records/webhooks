@@ -55,18 +55,15 @@ abstract class AbstractHandler implements HandlerInterface
         return $data;
     }
 
-    public function get(string $key = '', $default = '')
+    public function get(string $key, $default = '')
     {
         $body = $this->normalizeParsedBody();
-        if ($key !== '') {
-            if (isset($body[$key])) {
-                return $body[$key];
-            }
 
-            return $default;
+        if (isset($body[$key])) {
+            return $body[$key];
         }
 
-        return $body;
+        return $default;
     }
 
     public function getAfterCommitId(): string
@@ -82,5 +79,25 @@ abstract class AbstractHandler implements HandlerInterface
     public function getRepository(): array
     {
         return $this->get('repository', []);
+    }
+
+    public function getBranch(bool $split = true): string
+    {
+        $branch = $this->get('ref');
+        if ($split && !empty($branch)) {
+            $branch = explode('refs/heads/', $branch)[1] ?? '';
+        }
+
+        return $branch;
+    }
+
+    public function getTag(bool $split = true): string
+    {
+        $tag = $this->get('ref');
+        if ($split && !empty($tag)) {
+            $tag = explode('refs/tags/', $tag)[1] ?? '';
+        }
+
+        return $tag;
     }
 }
