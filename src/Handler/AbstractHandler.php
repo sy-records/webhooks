@@ -39,7 +39,11 @@ abstract class AbstractHandler implements HandlerInterface
 
         if (empty($data)) {
             if (strpos($contentType, 'application/json') === 0) {
-                $data = json_decode($this->request->getBody()->getContents(), true) ?? [];
+                $body = $this->request->getBody()->getContents();
+                if (get_class($this->request->getBody()) instanceof \GuzzleHttp\Psr7\CachingStream || empty($body)) {
+                    $body = (string) $this->request->getBody();
+                }
+                $data = json_decode($body, true) ?? [];
             }
         }
 
