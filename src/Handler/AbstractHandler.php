@@ -124,4 +124,11 @@ abstract class AbstractHandler implements HandlerInterface
 
         return $commits[$index]['message'] ?? '';
     }
+
+    public function getSshUrl(): string
+    {
+        $repo = $this->getRepository();
+
+        return $repo['ssh_url'] ?? '';
+    }
 }
