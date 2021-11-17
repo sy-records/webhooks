@@ -57,4 +57,15 @@ class GitLabHandler extends AbstractHandler
 
         return $user;
     }
+
+    public function getRepository(): array
+    {
+        $body = $this->getBody();
+
+        if (isset($body['project'])) {
+            return $body['project'];
+        }
+
+        return $body['repository'] ?? [];
+    }
 }
