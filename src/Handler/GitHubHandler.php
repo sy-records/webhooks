@@ -14,6 +14,9 @@ namespace Luffy\WebHook\Handler;
 
 use Luffy\WebHook\Constants\Header;
 
+/**
+ * @see https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
+ */
 class GitHubHandler extends AbstractHandler
 {
     public function isPing(): bool

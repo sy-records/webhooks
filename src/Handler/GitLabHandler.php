@@ -14,6 +14,9 @@ namespace Luffy\WebHook\Handler;
 
 use Luffy\WebHook\Constants\Header;
 
+/**
+ * @see https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html
+ */
 class GitLabHandler extends AbstractHandler
 {
     public function isPing(): bool

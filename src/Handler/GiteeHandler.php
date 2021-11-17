@@ -14,6 +14,9 @@ namespace Luffy\WebHook\Handler;
 
 use Luffy\WebHook\Constants\Header;
 
+/**
+ * @see https://gitee.com/help/articles/4186
+ */
 class GiteeHandler extends AbstractHandler
 {
     public function isPing(): bool
