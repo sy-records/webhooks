@@ -14,9 +14,11 @@ namespace Luffy\WebHook;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use Luffy\WebHook\Constants\Header;
+use Luffy\WebHook\Exception\InvalidArgumentException;
 use Luffy\WebHook\Handler\GiteeHandler;
 use Luffy\WebHook\Handler\GitHubHandler;
 use Luffy\WebHook\Handler\GitLabHandler;
+use Luffy\WebHook\Interfaces\HandlerInterface;
 use Luffy\WebHook\Interfaces\WebHookInterface;
 use Psr\Http\Message\MessageInterface;
 
@@ -44,6 +46,10 @@ class Payload implements WebHookInterface
         if ($this->isGitLabEvent()) {
             $this->handler = new GitLabHandler($this->request);
         }
+
+        if ($this->handler === null) {
+            throw new InvalidArgumentException('Invalid event type');
+        }
     }
 
     public function getRequest(): MessageInterface
@@ -51,7 +57,7 @@ class Payload implements WebHookInterface
         return $this->request;
     }
 
-    public function getHandler()
+    public function getHandler(): HandlerInterface
     {
         return $this->handler;
     }
