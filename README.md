@@ -8,6 +8,12 @@ WebHook Handler for GitHub, Gitee and GitLab.
 [![License](http://poser.pugx.org/sy-records/webhooks/license)](https://packagist.org/packages/sy-records/webhooks)
 [![PHP Version Require](http://poser.pugx.org/sy-records/webhooks/require/php)](https://packagist.org/packages/sy-records/webhooks)
 
+## Install
+
+```bash
+composer require sy-records/webhooks
+```
+
 ## Usage
 
 ```php
