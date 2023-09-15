@@ -13,4 +13,6 @@ declare(strict_types=1);
 
 namespace Luffy\WebHook\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException {}
+class InvalidArgumentException extends \InvalidArgumentException
+{
+}
