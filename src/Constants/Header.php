@@ -33,5 +33,11 @@ class Header
 
     public const GITEA_EVENT = 'x-gitea-event';
 
+    public const GITEA_EVENT_TYPE = 'x-gitea-event-type';
+
     public const GITEA_SIGN = 'x-gitea-signature';
+
+    public const GOGS_EVENT = 'x-gogs-event';
+
+    public const GOGS_SIGN = 'x-gogs-signature';
 }

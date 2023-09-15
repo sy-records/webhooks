@@ -20,12 +20,6 @@ use Luffy\WebHook\Constants\Header;
  */
 class GitLabHandler extends AbstractHandler
 {
-    public function isPing(): bool
-    {
-        // No ping event
-        return false;
-    }
-
     public function getHookName(): string
     {
         $name = $this->get('object_kind');
@@ -35,7 +29,7 @@ class GitLabHandler extends AbstractHandler
 
     public function getHookType(): string
     {
-        return $this->get('event_type');
+        return $this->get('event_type', $this->getHookName());
     }
 
     public function check(string $secret): bool

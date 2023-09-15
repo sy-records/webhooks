@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Luffy\WebHook;
 
 use GuzzleHttp\Psr7\ServerRequest;
-use Luffy\WebHook\Constants\Header;
 use Luffy\WebHook\Exception\InvalidArgumentException;
 use Luffy\WebHook\Handler\GiteaHandler;
 use Luffy\WebHook\Handler\GiteeHandler;
 use Luffy\WebHook\Handler\GitHubHandler;
 use Luffy\WebHook\Handler\GitLabHandler;
+use Luffy\WebHook\Handler\GogsHandler;
+use Luffy\WebHook\Handler\HandlerFactory;
 use Luffy\WebHook\Interfaces\HandlerInterface;
 use Luffy\WebHook\Interfaces\WebHookInterface;
 use Psr\Http\Message\MessageInterface;
@@ -28,28 +29,13 @@ class Payload implements WebHookInterface
 {
     protected $request;
 
-    /** @var GiteeHandler|GitHubHandler|GitLabHandler */
+    /** @var GiteaHandler|GiteeHandler|GitHubHandler|GitLabHandler|GogsHandler */
     protected $handler;
-
-    public $events = [
-        'GITEA_EVENT' => GiteaHandler::class,
-        'GITEE_EVENT' => GiteeHandler::class,
-        'GITHUB_EVENT' => GitHubHandler::class,
-        'GITLAB_EVENT' => GitLabHandler::class,
-    ];
 
     public function __construct(MessageInterface $request = null)
     {
         $this->request = $request ?? ServerRequest::fromGlobals();
-
-        foreach ($this->events as $event => $handlerClass) {
-            $headerConstant = constant(Header::class . '::' . $event);
-            if ($this->request->hasHeader($headerConstant)) {
-                $this->handler = new $handlerClass($this->request);
-
-                return;
-            }
-        }
+        $this->handler = HandlerFactory::create($this->request);
 
         if ($this->handler === null) {
             throw new InvalidArgumentException('Invalid event type');
@@ -68,13 +54,6 @@ class Payload implements WebHookInterface
 
     public function getHeaderEvent(): string
     {
-        foreach ($this->events as $event => $_) {
-            $headerConstant = constant(Header::class . '::' . $event);
-            if ($this->request->hasHeader($headerConstant)) {
-                return $this->request->getHeaderLine($headerConstant);
-            }
-        }
-
-        return '';
+        return $this->getHandler()->getHeaderEvent();
     }
 }

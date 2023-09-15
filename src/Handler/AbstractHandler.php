@@ -60,11 +60,13 @@ abstract class AbstractHandler implements HandlerInterface
     {
         $body = $this->normalizeParsedBody();
 
-        if (isset($body[$key])) {
-            return $body[$key];
-        }
+        return $body[$key] ?? $default;
+    }
 
-        return $default;
+    public function isPing(): bool
+    {
+        // No ping event
+        return false;
     }
 
     public function getAfterCommitId(): string
@@ -113,7 +115,7 @@ abstract class AbstractHandler implements HandlerInterface
         $commit = $body['head_commit'] ?? [];
         if (empty($commit)) {
             $commits = $body['commits'] ?? [];
-            $commit = array_shift($commits) ?? [];
+            $commit = array_shift($commits);
         }
 
         return $commit;
@@ -131,5 +133,10 @@ abstract class AbstractHandler implements HandlerInterface
         $repo = $this->getRepository();
 
         return $repo['ssh_url'] ?? '';
+    }
+
+    public function getHeaderEvent(): string
+    {
+        return $this->getHookName();
     }
 }

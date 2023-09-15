@@ -8,9 +8,10 @@
         "github",
         "gitee",
         "gitlab",
-        "gitea"
+        "gitea",
+        "gogs"
     ],
-    "description": "WebHook Handler for GitHub, Gitee, Gitea and GitLab.",
+    "description": "WebHook Handler for GitHub, Gitee, Gitea, GitLab and Gogs.",
     "authors": [
         {
             "name": "Lu Fei",
@@ -24,6 +25,7 @@
     },
     "require": {
         "php": ">=7.2",
+        "ext-json": "*",
         "guzzlehttp/psr7": "^2.1"
     },
     "require-dev": {

@@ -16,23 +16,23 @@ namespace Luffy\WebHook\Handler;
 use Luffy\WebHook\Constants\Header;
 
 /**
- * @see https://docs.gitea.com/next/usage/webhooks
+ * @see https://gogs.io/docs/features/webhook
  */
-class GiteaHandler extends AbstractHandler
+class GogsHandler extends AbstractHandler
 {
     public function getHookName(): string
     {
-        return $this->getRequest()->getHeaderLine(Header::GITEA_EVENT);
+        return $this->getRequest()->getHeaderLine(Header::GOGS_EVENT);
     }
 
     public function getHookType(): string
     {
-        return $this->getRequest()->getHeaderLine(Header::GITEA_EVENT_TYPE);
+        return $this->getRequest()->getHeaderLine(Header::GOGS_EVENT);
     }
 
     public function check(string $secret): bool
     {
-        $sign = $this->getRequest()->getHeaderLine(Header::GITEA_SIGN);
+        $sign = $this->getRequest()->getHeaderLine(Header::GOGS_SIGN);
         $payloadHash = hash_hmac('sha256', $this->request->getBody()->getContents(), $secret, false);
 
         return $sign === $payloadHash;

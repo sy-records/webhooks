@@ -1,6 +1,6 @@
 # webhooks
 
-WebHook Handler for GitHub, Gitee, Gitea and GitLab.
+WebHook Handler for GitHub, Gitee, Gitea, GitLab and Gogs.
 
 [![Latest Stable Version](http://poser.pugx.org/sy-records/webhooks/v)](https://packagist.org/packages/sy-records/webhooks)
 [![Total Downloads](http://poser.pugx.org/sy-records/webhooks/downloads)](https://packagist.org/packages/sy-records/webhooks)
