@@ -134,9 +134,4 @@ abstract class AbstractHandler implements HandlerInterface
 
         return $repo['ssh_url'] ?? '';
     }
-
-    public function getHeaderEvent(): string
-    {
-        return $this->getHookName();
-    }
 }

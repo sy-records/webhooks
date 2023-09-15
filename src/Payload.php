@@ -54,6 +54,6 @@ class Payload implements WebHookInterface
 
     public function getHeaderEvent(): string
     {
-        return $this->getHandler()->getHeaderEvent();
+        return $this->getHandler()->getHookName();
     }
 }

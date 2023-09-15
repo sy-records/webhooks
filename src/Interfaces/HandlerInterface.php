@@ -42,6 +42,4 @@ interface HandlerInterface
     public function getCommitMessage(int $index = 0): string;
 
     public function getSshUrl(): string;
-
-    public function getHeaderEvent(): string;
 }
