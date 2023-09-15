@@ -10,11 +10,13 @@ declare(strict_types=1);
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
  */
+
 namespace Luffy\WebHook;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use Luffy\WebHook\Constants\Header;
 use Luffy\WebHook\Exception\InvalidArgumentException;
+use Luffy\WebHook\Handler\GiteaHandler;
 use Luffy\WebHook\Handler\GiteeHandler;
 use Luffy\WebHook\Handler\GitHubHandler;
 use Luffy\WebHook\Handler\GitLabHandler;
@@ -29,22 +31,24 @@ class Payload implements WebHookInterface
     /** @var GiteeHandler|GitHubHandler|GitLabHandler */
     protected $handler;
 
+    public $events = [
+        'GITEA_EVENT' => GiteaHandler::class,
+        'GITEE_EVENT' => GiteeHandler::class,
+        'GITHUB_EVENT' => GitHubHandler::class,
+        'GITLAB_EVENT' => GitLabHandler::class,
+    ];
+
     public function __construct(MessageInterface $request = null)
     {
-        if ($request !== null) {
-            $this->request = $request;
-        } else {
-            $this->request = ServerRequest::fromGlobals();
-        }
+        $this->request = $request ?? ServerRequest::fromGlobals();
 
-        if ($this->isGiteeEvent()) {
-            $this->handler = new GiteeHandler($this->request);
-        }
-        if ($this->isGitHubEvent()) {
-            $this->handler = new GitHubHandler($this->request);
-        }
-        if ($this->isGitLabEvent()) {
-            $this->handler = new GitLabHandler($this->request);
+        foreach ($this->events as $event => $handlerClass) {
+            $headerConstant = constant(Header::class . '::' . $event);
+            if ($this->request->hasHeader($headerConstant)) {
+                $this->handler = new $handlerClass($this->request);
+
+                return;
+            }
         }
 
         if ($this->handler === null) {
@@ -62,31 +66,13 @@ class Payload implements WebHookInterface
         return $this->handler;
     }
 
-    public function isGiteeEvent(): bool
-    {
-        return $this->request->hasHeader(Header::GITEE_EVENT);
-    }
-
-    public function isGitHubEvent(): bool
-    {
-        return $this->request->hasHeader(Header::GITHUB_EVENT);
-    }
-
-    public function isGitLabEvent(): bool
-    {
-        return $this->request->hasHeader(Header::GITLAB_EVENT);
-    }
-
     public function getHeaderEvent(): string
     {
-        if ($this->isGiteeEvent()) {
-            return $this->request->getHeaderLine(Header::GITEE_EVENT);
-        }
-        if ($this->isGitHubEvent()) {
-            return $this->request->getHeaderLine(Header::GITHUB_EVENT);
-        }
-        if ($this->isGitLabEvent()) {
-            return $this->request->getHeaderLine(Header::GITLAB_EVENT);
+        foreach ($this->events as $event => $_) {
+            $headerConstant = constant(Header::class . '::' . $event);
+            if ($this->request->hasHeader($headerConstant)) {
+                return $this->request->getHeaderLine($headerConstant);
+            }
         }
 
         return '';

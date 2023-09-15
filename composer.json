@@ -7,9 +7,10 @@
         "webhook",
         "github",
         "gitee",
-        "gitlab"
+        "gitlab",
+        "gitea"
     ],
-    "description": "WebHook Handler for GitHub, Gitee and GitLab.",
+    "description": "WebHook Handler for GitHub, Gitee, Gitea and GitLab.",
     "authors": [
         {
             "name": "Lu Fei",
