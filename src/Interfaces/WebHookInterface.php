@@ -10,15 +10,16 @@ declare(strict_types=1);
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
  */
+
 namespace Luffy\WebHook\Interfaces;
+
+use Psr\Http\Message\MessageInterface;
 
 interface WebHookInterface
 {
-    public function isGiteeEvent(): bool;
+    public function getRequest(): MessageInterface;
 
-    public function isGitHubEvent(): bool;
-
-    public function isGitLabEvent(): bool;
+    public function getHandler(): HandlerInterface;
 
     public function getHeaderEvent(): string;
 }

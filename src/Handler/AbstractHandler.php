@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
  */
+
 namespace Luffy\WebHook\Handler;
 
 use Luffy\WebHook\Interfaces\HandlerInterface;
@@ -59,11 +60,13 @@ abstract class AbstractHandler implements HandlerInterface
     {
         $body = $this->normalizeParsedBody();
 
-        if (isset($body[$key])) {
-            return $body[$key];
-        }
+        return $body[$key] ?? $default;
+    }
 
-        return $default;
+    public function isPing(): bool
+    {
+        // No ping event
+        return false;
     }
 
     public function getAfterCommitId(): string
@@ -112,7 +115,7 @@ abstract class AbstractHandler implements HandlerInterface
         $commit = $body['head_commit'] ?? [];
         if (empty($commit)) {
             $commits = $body['commits'] ?? [];
-            $commit = array_shift($commits) ?? [];
+            $commit = array_shift($commits);
         }
 
         return $commit;

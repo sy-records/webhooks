@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
  */
+
 namespace Luffy\WebHook\Handler;
 
 use Luffy\WebHook\Constants\Header;
@@ -43,9 +44,9 @@ class GiteeHandler extends AbstractHandler
         $sign = $this->getRequest()->getHeaderLine(Header::GITEE_TOKEN);
         $timestamp = $this->getRequest()->getHeaderLine(Header::GITEE_TIMESTAMP);
 
-        $secret_str = "{$timestamp}\n{$secret}";
-        $compute_token = base64_encode(hash_hmac('sha256', $secret_str, $secret, true));
-        if ($sign !== $compute_token) {
+        $secretStr = "{$timestamp}\n{$secret}";
+        $computeToken = base64_encode(hash_hmac('sha256', $secretStr, $secret, true));
+        if ($sign !== $computeToken) {
             return false;
         }
 

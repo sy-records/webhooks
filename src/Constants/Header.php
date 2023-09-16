@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
  */
+
 namespace Luffy\WebHook\Constants;
 
 class Header
@@ -29,4 +30,14 @@ class Header
     public const GITLAB_EVENT = 'x-gitlab-event';
 
     public const GITLAB_TOKEN = 'x-gitlab-token';
+
+    public const GITEA_EVENT = 'x-gitea-event';
+
+    public const GITEA_EVENT_TYPE = 'x-gitea-event-type';
+
+    public const GITEA_SIGN = 'x-gitea-signature';
+
+    public const GOGS_EVENT = 'x-gogs-event';
+
+    public const GOGS_SIGN = 'x-gogs-signature';
 }

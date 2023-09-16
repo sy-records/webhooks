@@ -16,32 +16,26 @@ namespace Luffy\WebHook\Handler;
 use Luffy\WebHook\Constants\Header;
 
 /**
- * @see https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
+ * @see https://gogs.io/docs/features/webhook
  */
-class GitHubHandler extends AbstractHandler
+class GogsHandler extends AbstractHandler
 {
-    public function isPing(): bool
-    {
-        return $this->getRequest()->getHeaderLine(Header::GITHUB_EVENT) === 'ping';
-    }
-
     public function getHookName(): string
     {
-        return $this->getRequest()->getHeaderLine(Header::GITHUB_EVENT);
+        return $this->getRequest()->getHeaderLine(Header::GOGS_EVENT);
     }
 
     public function getHookType(): string
     {
-        return $this->get('action');
+        return $this->getRequest()->getHeaderLine(Header::GOGS_EVENT);
     }
 
     public function check(string $secret): bool
     {
-        $sign = $this->getRequest()->getHeaderLine(Header::GITHUB_SIGN);
-        [$algo, $hash] = explode('=', $sign, 2);
-        $payloadHash = hash_hmac($algo, $this->request->getBody()->getContents(), $secret);
+        $sign = $this->getRequest()->getHeaderLine(Header::GOGS_SIGN);
+        $payloadHash = hash_hmac('sha256', $this->request->getBody()->getContents(), $secret, false);
 
-        return $hash === $payloadHash;
+        return $sign === $payloadHash;
     }
 
     public function getSender(): array

@@ -80,6 +80,7 @@ return (new PhpCsFixer\Config())
         'multiline_whitespace_before_semicolons' => [
             'strategy' => 'no_multi_line',
         ],
+        'single_line_empty_body' => false,
         'class_attributes_separation' => true,
         'combine_consecutive_unsets' => true,
         'declare_strict_types' => true,
